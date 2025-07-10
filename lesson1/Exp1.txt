@@ -1,5 +1,0 @@
-https://habr.com/ru/articles/871840/
-https://habr.com/ru/articles/358142/
-https://www.geeksforgeeks.org/software-testing/stages-of-automation-testing-life-cycle/
-https://www.geeksforgeeks.org/software-engineering/continuous-integration-and-continuous-developmentci-cd/
-https://www.geeksforgeeks.org/blogs/automation-testing-roadmap/
