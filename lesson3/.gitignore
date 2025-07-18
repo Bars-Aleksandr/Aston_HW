@@ -1,0 +1,29 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+*.xml
+
+# Out directories for different build tools
+/out/
+/bin/
+
+# Specific project-related files
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# Build outputs
+.nbbuild/
+.dist/
+.nbdist/
+.nb-gradle/
+
+# VSCode specific files
+.vscode/
+
+# Hidden system files
+.DS_Store
+
