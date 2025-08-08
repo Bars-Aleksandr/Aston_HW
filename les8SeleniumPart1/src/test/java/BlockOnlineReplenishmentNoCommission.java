@@ -13,10 +13,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.List;
-// Проверить название указанного блока;
-// Проверить наличие логотипов платёжных систем;
-// Проверить работу ссылки «Подробнее о сервисе»;
-// Заполнить поля и проверить работу кнопки «Продолжить» (проверяем только вариант «Услуги связи»,номер для теста 297777777)
+
 
 public class BlockOnlineReplenishmentNoCommission {
     private static WebDriver driver;
@@ -27,13 +24,14 @@ public class BlockOnlineReplenishmentNoCommission {
     static void setupUp() {
         WebDriverManager.chromedriver().setup();
         ChromeOptions chromeOptions = new ChromeOptions();
-       // chromeOptions.addArguments("--headless");
+        chromeOptions.addArguments("--headless");
         chromeOptions.addArguments("--disable-cookies");
         driver = new ChromeDriver(chromeOptions);
         wait = new WebDriverWait(driver, Duration.ofSeconds(3));
     }
+
     @BeforeEach
-    void beforeEachTest(){
+    void beforeEachTest() {
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
         driver.get("https://mts.by/");
         try {
@@ -44,93 +42,37 @@ public class BlockOnlineReplenishmentNoCommission {
         }
     }
 
-//    @AfterAll
-//    static void teardown() {
-//        driver.manage().deleteAllCookies();
-//        driver.quit();
-//    }
+    @AfterAll
+    static void teardown() {
+        driver.manage().deleteAllCookies();
+        driver.quit();
+    }
 
     @Test
     @DisplayName("Проверка работы кнопки «Продолжить» блока «Онлайн пополнение без комиссии» при пополнении баланса")
-    void checkFormFillAndSubmit(){
+    void checkFormFillAndSubmit() {
         WebElement phoneInput = wait.until(ExpectedConditions.elementToBeClickable(By.id("connection-phone")));
         phoneInput.click();
-        phoneInput.clear();
         phoneInput.sendKeys("297777777");
         System.out.println(phoneInput.getText());
 
         WebElement sumInput = driver.findElement(By.id("connection-sum"));
         sumInput.click();
-        sumInput.clear();
         sumInput.sendKeys("10");
         wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         WebElement form = driver.findElement(By.cssSelector("#pay-connection"));
         WebElement continueButton = form.findElement(By.cssSelector("button.button.button__default"));
         continueButton.click();
-        //WebElement iframe = driver.findElement(By.className("bepaid-app__container"));
+
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(40));
-        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.tagName("iframe")));
-        List<WebElement> iframes = driver.findElements(By.tagName("iframe"));
-
-       // wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(By.className("bepaid-iframe")));
-        WebElement firstIframe = iframes.get(0);
-        System.out.println("Count iframes = " + iframes.size());
-        System.out.println("IFRAME SRC: " + firstIframe.getAttribute("src"));
-        System.out.println("IFRAME CLASS: " + firstIframe.getAttribute("class"));
-        System.out.println("IFRAME STYLE: " + firstIframe.getAttribute("style"));
-        System.out.println("IFRAME TITLE: " + firstIframe.getAttribute("title"));
-
-
-        System.out.println("count iframes = " + iframes.size());
-
-
-//        try {
-//            // Загрузка целевой страницы
-//            driver.get("http://your-target-page.com");
-//
-//            // Ждем, пока iframe станет доступен и будет готов к использованию
-//            WebDriverWait wait = new WebDriverWait(driver, 10); // ждем до 10 секунд
-//            wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(By.cssSelector("iframe#your-iframe-id")));
-//
-//            // Выполняем дополнительное действие, если нужно (например, проверка содержимого фрейма)
-//            // Но здесь наша цель - убедиться, что iframe загрузился
-//
-//            // Тест успешен!
-//            System.out.println("Iframe loaded successfully.");
-//
-//        } catch (Throwable e) {
-//            System.err.println("Error loading iframe: " + e.getMessage());
-//        } finally {
-//            // Завершаем работу браузера
-//            driver.quit();
-//        }
-//
-//        List<WebElement> iframesIframes = driver.findElements(By.tagName("iframe"));
-//        for (WebElement iframe : iframesIframes) {
-//            String src = iframe.getAttribute("src");
-//            if (src.contains("https://www.googletagmanager.com/ns.html?id=GTM-58MXNGS")) { // Проверяем специфический источник
-//                driver.switchTo().frame(iframe); // Переходим в фрейм
-//                // Теперь можно взаимодействовать с содержимым фрейма
-//                break;
-//            }
-//        }
-//
-//
-//        List<WebElement> allElements = driver.findElements(By.xpath("//*"));
-//        for(WebElement element : allElements){
-//            String tagName = element.getTagName();           // Имя тега
-//            String textContent = element.getText();          // Текст содержимого
-//            String attributeClass = element.getAttribute("class");   // Атрибут класса
-//
-//            System.out.println("Tag Name: " + tagName +
-//                    ", Text Content: '" + textContent +
-//                    "', Class Attribute: '" + attributeClass + "'");
-//        }
-//
-//
-//        // Получаем заголовок открытого фрейма и проверяем его равенство
-//        String title = driver.getTitle();
-//        assert title.equals("BePaidWidget") : "Фрейм не открыт или заголовок неверный!";
+        try {
+            wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(By.cssSelector("iframe.bepaid-iframe[src^='https://checkout.bepaid.by/widget_v2/']")));
+            System.out.println("Iframe успешно загружен и готов к взаимодействию.");
+        } catch (TimeoutException e) {
+            System.err.println("Время ожидания истекло, iframe не загрузился.");
+        } catch (Exception e) {
+            System.err.println("Ошибка: " + e.getMessage());
+        }
 
 
     }
