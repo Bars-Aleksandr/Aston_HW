@@ -207,6 +207,7 @@ public class BlockOnlineReplenishmentNoCommission {
         paymentSection.getWait().until(ExpectedConditions.visibilityOf(paymentSection.labelForFieldInputAmountPayArrears));
         String labelFieldAmountPayActual = paymentSection.labelForFieldInputAmountPayArrears.getText();
 
+        System.out.println("LAbel = " + labelFieldAmountPayActual);
         assertEquals(SectionPaymentNoCommission.LABEL_PAYAMOUNT_EXPECTED, labelFieldAmountPayActual, "в поле валюта не соответсвует ожидаемому");
 
         WebElement fieldEmail = paymentSection.fieldInputEmail;
